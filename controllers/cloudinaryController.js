@@ -4,9 +4,9 @@ cloudinary.config({
   // cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   // api_key: process.env.CLOUDINARY_API_KEY,
   // api_secret: process.env.CLOUDINARY_API_SECRET,
-  cloud_name: "mobileshopug",
-  api_key: "445211127762212",
-  api_secret: "5sETHVDSFzgwZomXL_irBtMYvx8",
+  cloud_name: "inthing-wear",
+  api_key: "142763692891792",
+  api_secret: "IzzfFQkIctPS5Ek94aqudY7hTKg",
 });
 
 const uploadImages = async (req, res) => {
