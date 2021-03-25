@@ -8,7 +8,7 @@ import {
 
 const { authCheck, adminCheck } = require("../middleware/authMiddleware");
 
-router.post("/", authCheck, createOrder);
+router.post("/", createOrder);
 router.get("/", getOrders);
 router.get("/:id", getOrderById);
 

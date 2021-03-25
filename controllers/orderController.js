@@ -42,10 +42,10 @@ export const createOrder = async (req, res) => {
     throw new Error('No order items')
     return
   } else {
-    const orderedBy = req.user.profile.phonenumber;
+    // const orderedBy = req.user.profile.phonenumber;
     const order = new Order({
       orderItems,
-      orderedBy,
+      // orderedBy,
       address,
       name,
       contact,
