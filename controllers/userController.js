@@ -2,29 +2,32 @@ import User from "../models/userModel";
 import generateToken from "../utils/generateToken.js";
 
 export const registerAdmin = async (req, res) => {
-  const { firstName, lastName, username, password } = req.body;
+  const { fname, lname, email, password, role, phone } = req.body;
 
-  const userExists = await User.findOne({ username });
+  const userExists = await User.findOne({ email });
 
   if (userExists) {
     res.status(400);
-    throw new Error("User already exists");
+    throw new Error("User with that email already exists");
   }
 
   const user = await User.create({
-    firstName,
-    lastName,
-    username,
+    fname,
+    lname,
+    email,
+    role,
+    phone,
     password,
   });
 
   if (user) {
     res.status(201).json({
       _id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
+      fname: user.fname,
+      lname: user.lname,
+      email: user.email,
       role: user.role,
+      phone: user.phone,
       token: generateToken(user._id),
     });
   } else {
@@ -41,8 +44,10 @@ export const loginAdmin = async (req, res) => {
   if (staff && (await staff.matchPassword(password))) {
     res.json({
       _id: staff._id,
-      username: staff.username,
+      email: staff.email,
       role: staff.role,
+      fname: staff.fname,
+      lname: staff.lname,
       token: generateToken(staff._id),
     });
   } else {
