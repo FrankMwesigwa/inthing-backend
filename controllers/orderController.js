@@ -1,5 +1,5 @@
 import Order from "../models/orderModel"
-// import SendSMS from '../config/sendSMS'
+import SendSMS from '../config/sendSMS'
 
 export const getMyOrders = async (req, res) => {
   const orders = await Order.find({ phonenumber: req.phonenumber })
@@ -43,9 +43,10 @@ export const createOrder = async (req, res) => {
     return
   } else {
     // const orderedBy = req.user.profile.phonenumber;
+    const orderedBy = '+256779825056';
     const order = new Order({
       orderItems,
-      // orderedBy,
+      orderedBy,
       address,
       name,
       contact,
@@ -58,11 +59,11 @@ export const createOrder = async (req, res) => {
       totalquantity
     })
 
-    const phonenumber = ['+256706652079', '+256751290264']
+    const phonenumber = ['+256779825056', '+256783992397', '+256786488258']
 
-    // {orderItems.length > 1 ? orderItems.map((order)=>(
-    //   SendSMS(phonenumber, `New orders For ${order.title} at a cost of ${order.price} from ${orderedBy} has been placed`)
-    // )): SendSMS(phonenumber, `A New order For ${orderItems.title} at a cost of ${totalPrice} from ${orderedBy} has been placed`)}
+    {orderItems.length > 1 ? orderItems.map((order)=>(
+      SendSMS(phonenumber, `New orders For ${order.title} at a cost of ${order.price} from ${orderedBy} has been placed on inthing website`)
+    )): SendSMS(phonenumber, `A New order For ${orderItems.title} at a cost of ${totalPrice} from ${orderedBy} has been placed on inthing website`)}
 
     const createdOrder = await order.save()
     res.status(201).json(createdOrder)
