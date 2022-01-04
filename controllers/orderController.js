@@ -1,5 +1,5 @@
 import Order from "../models/orderModel"
-import SendSMS from '../config/sendSMS'
+import SendSMS from '../config/SendSMS'
 
 export const getMyOrders = async (req, res) => {
   const orders = await Order.find({ phonenumber: req.phonenumber })
@@ -26,9 +26,10 @@ export const createOrder = async (req, res) => {
   const {
     orderItems,
     address,
-    name,
-    contact,
+    firstname,
+    lastname,
     email,
+    orderedBy,
     paymentMethod,
     itemsPrice,
     taxPrice,
@@ -42,14 +43,14 @@ export const createOrder = async (req, res) => {
     throw new Error('No order items')
     return
   } else {
-    // const orderedBy = req.user.profile.phonenumber;
-    const orderedBy = '+256779825056';
+    //const orderedBy = req.user.profile.phonenumber;
+    //const orderedBy = '+256779825056';
     const order = new Order({
       orderItems,
+      firstname,
+      lastname,
       orderedBy,
       address,
-      name,
-      contact,
       email,
       paymentMethod,
       itemsPrice,
@@ -62,8 +63,8 @@ export const createOrder = async (req, res) => {
     const phonenumber = ['+256779825056', '+256783992397', '+256786488258']
 
     {orderItems.length > 1 ? orderItems.map((order)=>(
-      SendSMS(phonenumber, `New orders For ${order.title} at a cost of ${order.price} from ${orderedBy} has been placed on inthing website`)
-    )): SendSMS(phonenumber, `A New order For ${orderItems.title} at a cost of ${totalPrice} from ${orderedBy} has been placed on inthing website`)}
+      SendSMS(phonenumber, `${firstname} ${lastname} with phonenumber of ${orderedBy} Has placed a new order for ${order.title} at a cost of ${order.price} on inthing site`)
+    )): SendSMS(phonenumber, `${firstname} ${lastname} with phonenumber of ${orderedBy} Has placed a new order for ${order.title} at a cost of ${order.price} on inthing site`)}
 
     const createdOrder = await order.save()
     res.status(201).json(createdOrder)

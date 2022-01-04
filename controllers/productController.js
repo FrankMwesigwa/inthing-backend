@@ -1,22 +1,16 @@
 import asyncHandler from "express-async-handler";
 import slugify from "slugify";
 import Product from "../models/productModel.js";
-import Sub from "../models/subModel"
+import Sub from "../models/subModel";
 
 export const getAllProducts = async (req, res) => {
-  const pageSize=30
-  const page = parseInt(req.query.page || 1)
-  const total = await Product.countDocuments({})
-
   const products = await Product.find({})
     .populate("category")
     .populate("subs")
-    .sort({createdAt:'desc'})
-    .limit(pageSize)
-    .skip(pageSize * page)
+    .sort({ createdAt: "desc" });
 
   if (products) {
-    res.json({products, total, totalPages: Math.ceil(total/pageSize)});
+    res.json(products);
   } else {
     res.status(404);
     throw new Error("Products not found");
@@ -24,21 +18,18 @@ export const getAllProducts = async (req, res) => {
 };
 
 const getProduct = asyncHandler(async (req, res) => {
-  
   const product = await Product.findOne({ _id: req.params.id })
     .populate("subs")
     .populate("category")
     .populate("accessorys")
     .exec();
 
-    
   res.json(product);
 });
 
 const getProductsByBrand = async (req, res) => {
   let sub = await Sub.findOne({ slug: req.params.slug });
-  const products = await Product.find({ subs: sub })
-  .populate("subs")
+  const products = await Product.find({ subs: sub }).populate("subs");
 
   res.json(products);
 };
@@ -57,14 +48,13 @@ const deleteProduct = async (req, res) => {
 
 const createProduct = asyncHandler(async (req, res) => {
   try {
-
-    const productFields = {}
+    const productFields = {};
 
     const originalprice = req.body.price;
     const discount = req.body.discount;
-    const afterDiscount = originalprice - (originalprice * discount / 100);
+    const afterDiscount = originalprice - (originalprice * discount) / 100;
 
-    if(req.body.discount){
+    if (req.body.discount) {
       productFields.discountprice = afterDiscount;
     } else {
       productFields.discountprice = null;
@@ -80,7 +70,7 @@ const createProduct = asyncHandler(async (req, res) => {
     productFields.quantity = req.body.quantity;
     productFields.color = req.body.color;
     productFields.slug = slugify(req.body.title);
-    productFields.specifications = req.body.specifications.split(',');
+    productFields.specifications = req.body.specifications.split(",");
 
     const newProduct = await new Product(productFields).save();
     res
@@ -95,14 +85,13 @@ const createProduct = asyncHandler(async (req, res) => {
 
 const updateProduct = async (req, res) => {
   try {
-
-    const productFields = {}
+    const productFields = {};
 
     const originalprice = req.body.price;
     const discount = req.body.discount;
-    const afterDiscount = originalprice - (originalprice * discount / 100);
+    const afterDiscount = originalprice - (originalprice * discount) / 100;
 
-    if(req.body.discount){
+    if (req.body.discount) {
       productFields.discountprice = afterDiscount;
     } else {
       productFields.discountprice = null;
@@ -123,22 +112,22 @@ const updateProduct = async (req, res) => {
 
     productFields.slug = slugify(req.body.title);
 
-    if(productFields.performance){
-      productFields.performance = req.body.performance.split(',');
+    if (productFields.performance) {
+      productFields.performance = req.body.performance.split(",");
     }
-    if(productFields.display){
-      productFields.display = req.body.display.split(',');
+    if (productFields.display) {
+      productFields.display = req.body.display.split(",");
     }
-    if(productFields.camera){
-      productFields.camera=req.body.camera.split(',');
+    if (productFields.camera) {
+      productFields.camera = req.body.camera.split(",");
     }
-    if(productFields.battery){
-      productFields.battery= req.body.battery.split(',');
+    if (productFields.battery) {
+      productFields.battery = req.body.battery.split(",");
     }
-    if(productFields.tv){
-      productFields.tv= req.body.tv.split(',');
+    if (productFields.tv) {
+      productFields.tv = req.body.tv.split(",");
     }
-    
+
     productFields.storageprice = {};
 
     productFields.storageprice.eight = req.body.eight;
@@ -150,16 +139,17 @@ const updateProduct = async (req, res) => {
     productFields.storageprice.fivetwelve = req.body.fivetwelve;
     productFields.storageprice.onetb = req.body.onetb;
 
-    const updatedProduct = await Product.findOneAndUpdate({ _id: req.params.id },
+    const updatedProduct = await Product.findOneAndUpdate(
+      { _id: req.params.id },
       productFields,
       { new: true }
     ).exec();
-      res.json(updatedProduct);
-    } catch (err) {
-      console.log(err);
-      res.status(400);
-      throw new Error("Update Product Creation Failed !!!");
-    }
+    res.json(updatedProduct);
+  } catch (err) {
+    console.log(err);
+    res.status(400);
+    throw new Error("Update Product Creation Failed !!!");
+  }
 };
 
 const listRelated = async (req, res) => {
@@ -177,7 +167,9 @@ const listRelated = async (req, res) => {
 };
 
 const handleQuery = async (req, res, query) => {
-  const products = await Product.find({ title: { $regex: query,$options: 'i'  } })
+  const products = await Product.find({
+    title: { $regex: query, $options: "i" },
+  })
     .populate("category", "_id name")
     .populate("subs", "_id name")
     .exec();
@@ -185,7 +177,7 @@ const handleQuery = async (req, res, query) => {
   res.json(products);
 };
 
-export const searchQuery = async (req, res, ) => {
+export const searchQuery = async (req, res) => {
   const products = await Product.find({})
     .populate("category", "_id name")
     .populate("subs", "_id name")
@@ -209,5 +201,5 @@ export {
   updateProduct,
   getProductsByBrand,
   listRelated,
-  searchFilters
+  searchFilters,
 };

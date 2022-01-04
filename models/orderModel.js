@@ -19,13 +19,10 @@ const orderSchema = mongoose.Schema(
     orderedBy: {
       type: String
     },
-    contact: {
+    firstname: {
       type: String
     },
-    totalquantity: {
-      type: String
-    },
-    name: {
+    lastname: {
       type: String
     },
     email: {
