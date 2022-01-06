@@ -14,6 +14,7 @@ import subRoutes from './routes/subRoute';
 import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
 import smsRoutes from './routes/smsRoutes';
+import wishRoutes from './routes/wishListRoutes';
 import accessoryRoutes from './routes/accessoryRoutes';
 
 dotenv.config()
@@ -40,6 +41,7 @@ app.use('/api/upload', uploadRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/otp', smsRoutes)
+app.use('/api/wishlist', wishRoutes)
 app.use('/api/accessory', accessoryRoutes)
 
 const PORT = process.env.PORT || 5000
