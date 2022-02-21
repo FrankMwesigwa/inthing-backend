@@ -4,11 +4,11 @@ import Sub from '../models/subModel';
 import slugify from 'slugify';
 
 const createCategory = async (req, res) => {
+  console.log ("Category received ===>", req.body)
   try {
-    const { name } = req.body;
-    res.json(await new Category({ name, slug: slugify(name) }).save());
+    res.json(await new Category({name: req.body.name}).save());
   } catch (err) {
-    res.status(400).send("Create category failed");
+    console.log(err);
   }
 };
 

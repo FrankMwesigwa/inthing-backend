@@ -1,21 +1,48 @@
-import express from 'express'
-const router = express.Router()
+import express from "express";
+import Category from "../models/categoryModel.js";
 
-import {
-    createCategory,
-    getCategories,
-    getCategory,
-    updateCategory,
-    removeCategory,
-    getSubs
-} from "../controllers/categoryController";
+const router = express.Router();
 
-router.post("/", createCategory);
-router.get("/", getCategories);
-router.get("/:slug", getCategory);
-router.put("/:slug", updateCategory);
-router.delete('/:slug', removeCategory);
-router.get("/subs/:_id", getSubs);
+router.post("/", async (req, res) => {
+    console.log("Body ====>", req.body)
+  let category = new Category({
+    category: req.body.category,
+    type: req.body.type,
+    description: req.body.description,
+  });
+  try {
+    let newCategory = await category.save();
+    res.status(201).json({
+      message: "Category has been created successfully",
+      newCategory,
+    });
+  } catch (error) {
+    res.json(error);
+    console.log("Error ====>", error)
+  }
+});
 
+router.get("/", async (req, res) => {
+  try {
+    let institutes = await Category.find()
+    if (!institutes) {
+      res.json({
+        message: "There are no institutes in the database at this time",
+      });
+    }
+    res.status(200).json(institutes);
+  } catch (error) {
+    res.json(error.message);
+  }
+});
 
-export default router
+router.get("/:id", async (req, res) => {
+  try {
+    let category = await Category.findById(req.params.id)
+    res.status(200).json(category);
+  } catch (error) {
+    res.json(error.message);
+  }
+});
+
+export default router;

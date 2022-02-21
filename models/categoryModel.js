@@ -2,15 +2,14 @@ import mongoose from "mongoose";
 
 const categorySchema = mongoose.Schema(
   {
-    name: {
+    category: {
       type: String,
-      trim: true
     },
-    slug: {
+    type: {
       type: String,
-      unique: true,
-      lowercase: true,
-      index: true,
+    },
+    description: {
+      type: String,
     },
   },
   { timestamps: true }

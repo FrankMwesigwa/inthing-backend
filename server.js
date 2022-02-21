@@ -9,7 +9,7 @@ import connectDB from './config/db.js'
 import productRoutes from './routes/productRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import uploadRoutes from './routes/cloundinaryRoutes'
-import categoryRoutes from './routes/categoryRoutes';
+import categoryRoutes from './routes/categoryRoutes.js';
 import subRoutes from './routes/subRoute';
 import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
@@ -21,20 +21,21 @@ dotenv.config()
 
 connectDB()
 
-const app = express()
+const app = express();
+
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded());
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
 
-app.use(express.json({limit: '500mb'}));
-app.use(express.urlencoded({limit: '500mb'}));
 app.use('/public', express.static(path.join(__dirname, 'uploads')));
 
 
 app.use('/api/category', categoryRoutes)
-app.use('/api/subs', subRoutes)
+app.use('/api/brand', subRoutes)
 app.use('/api/product', productRoutes)
 app.use('/api/orders', orderRoutes)
 app.use('/api/upload', uploadRoutes)
