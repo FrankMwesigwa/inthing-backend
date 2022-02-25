@@ -8,11 +8,12 @@ import connectDB from './config/db.js'
 
 import productRoutes from './routes/productRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
-import uploadRoutes from './routes/cloundinaryRoutes'
+import imageRoutes from './routes/imageRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import subRoutes from './routes/subRoute';
 import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
+import adminRoutes from './routes/adminRoutes';
 import smsRoutes from './routes/smsRoutes';
 import wishRoutes from './routes/wishListRoutes';
 import accessoryRoutes from './routes/accessoryRoutes';
@@ -31,16 +32,16 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
 
-app.use('/public', express.static(path.join(__dirname, 'uploads')));
-
+app.use("/api/uploads", express.static(__dirname + '/public'));
 
 app.use('/api/category', categoryRoutes)
 app.use('/api/brand', subRoutes)
 app.use('/api/product', productRoutes)
 app.use('/api/orders', orderRoutes)
-app.use('/api/upload', uploadRoutes)
+app.use('/api/upload', imageRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/admin', adminRoutes)
 app.use('/api/otp', smsRoutes)
 app.use('/api/wishlist', wishRoutes)
 app.use('/api/accessory', accessoryRoutes)

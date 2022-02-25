@@ -6,7 +6,7 @@ import Sub from "../models/subModel";
 export const getAllProducts = async (req, res) => {
   const products = await Product.find({})
     .populate("category")
-    .populate("subs")
+    .populate("brand")
     .sort({ createdAt: "desc" });
 
   if (products) {
@@ -19,7 +19,7 @@ export const getAllProducts = async (req, res) => {
 
 const getProduct = asyncHandler(async (req, res) => {
   const product = await Product.findOne({ _id: req.params.id })
-    .populate("subs")
+    .populate("brand")
     .populate("category")
     .populate("accessorys")
     .exec();

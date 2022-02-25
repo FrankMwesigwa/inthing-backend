@@ -6,8 +6,6 @@ import {
   getOrderById
 } from '../controllers/orderController.js'
 
-const { authCheck, adminCheck } = require("../middleware/authMiddleware");
-
 router.post("/", createOrder);
 router.get("/", getOrders);
 router.get("/:id", getOrderById);
