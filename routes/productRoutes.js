@@ -11,6 +11,7 @@ import {
   listRelated,
   searchFilters,
   searchQuery,
+  removeImage
 } from '../controllers/productController.js'
 
 const { authCheck, adminCheck } = require("../middleware/authMiddleware");
@@ -20,6 +21,7 @@ router.get("/:slug", getProductsByBrand);
 router.get("/prod/:id", getProduct);
 router.delete("/:slug", deleteProduct);
 router.put("/:id", updateProduct);
+router.put("/remove/:id", removeImage);
 router.get("/related/:productId", listRelated);
 router.post("/search/filters", searchFilters);
 router.post("/", createProduct);

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 const { ObjectId } = mongoose.Schema;
 
 const productSchema = mongoose.Schema(
@@ -17,6 +17,12 @@ const productSchema = mongoose.Schema(
     description: {
       type: String,
       text: true,
+    },
+    manname: {
+      type: String,
+    },
+    manbrand: {
+      type: String,
     },
     price: {
       type: Number,
@@ -47,15 +53,15 @@ const productSchema = mongoose.Schema(
       type: Array,
     },
     color: {
-      type: String
+      type: String,
     },
     specifications: {
-      type: [String]
-    }
+      type: [String],
+    },
   },
   { timestamps: true }
-)
+);
 
-const Product = mongoose.model('Product', productSchema)
+const Product = mongoose.model("Product", productSchema);
 
-export default Product
+export default Product;

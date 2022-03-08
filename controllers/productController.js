@@ -17,15 +17,14 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
-const getProduct = asyncHandler(async (req, res) => {
-  const product = await Product.findOne({ _id: req.params.id })
-    .populate("brand")
-    .populate("category")
-    .populate("accessorys")
-    .exec();
-
-  res.json(product);
-});
+const getProduct = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id).populate("category");
+    return res.json(product);
+  } catch (err) {
+    return res.json({ message: err.message });
+  }
+};
 
 const getProductsByBrand = async (req, res) => {
   let sub = await Sub.findOne({ slug: req.params.slug });
@@ -69,6 +68,8 @@ const createProduct = asyncHandler(async (req, res) => {
     productFields.category = req.body.category;
     productFields.quantity = req.body.quantity;
     productFields.color = req.body.color;
+    productFields.manname = req.body.manname;
+    productFields.manbrand = req.body.manbrand;
     productFields.slug = slugify(req.body.title);
     productFields.specifications = req.body.specifications.split(",");
 
@@ -106,38 +107,9 @@ const updateProduct = async (req, res) => {
     productFields.category = req.body.category;
     productFields.quantity = req.body.quantity;
     productFields.color = req.body.color;
-    productFields.storageChecked = req.body.storageChecked;
-    productFields.memory = req.body.memory;
-    productFields.condition = req.body.condition;
-
-    productFields.slug = slugify(req.body.title);
-
-    if (productFields.performance) {
-      productFields.performance = req.body.performance.split(",");
-    }
-    if (productFields.display) {
-      productFields.display = req.body.display.split(",");
-    }
-    if (productFields.camera) {
-      productFields.camera = req.body.camera.split(",");
-    }
-    if (productFields.battery) {
-      productFields.battery = req.body.battery.split(",");
-    }
-    if (productFields.tv) {
-      productFields.tv = req.body.tv.split(",");
-    }
-
-    productFields.storageprice = {};
-
-    productFields.storageprice.eight = req.body.eight;
-    productFields.storageprice.sixteen = req.body.sixteen;
-    productFields.storageprice.thirtytwo = req.body.thirtytwo;
-    productFields.storageprice.sixtyfour = req.body.sixtyfour;
-    productFields.storageprice.onetwentyeight = req.body.onetwentyeight;
-    productFields.storageprice.twofiftysix = req.body.twofiftysix;
-    productFields.storageprice.fivetwelve = req.body.fivetwelve;
-    productFields.storageprice.onetb = req.body.onetb;
+    productFields.manname = req.body.manname;
+    productFields.manbrand = req.body.manbrand;
+    productFields.specifications = req.body.specifications.split(",");
 
     const updatedProduct = await Product.findOneAndUpdate(
       { _id: req.params.id },
@@ -194,6 +166,25 @@ const searchFilters = async (req, res) => {
   }
 };
 
+const removeImage = async (req, res) => {
+  try {
+    const productFields = {};
+
+    productFields.images = req.body.images;
+
+    const updatedProduct = await Product.findOneAndUpdate(
+      { _id: req.params.id },
+      productFields,
+      { new: true }
+    ).exec();
+    res.json(updatedProduct);
+  } catch (err) {
+    console.log(err);
+    res.status(400);
+    throw new Error("Image Removed Failed !!!");
+  }
+};
+
 export {
   getProduct,
   deleteProduct,
@@ -202,4 +193,5 @@ export {
   getProductsByBrand,
   listRelated,
   searchFilters,
+  removeImage,
 };
