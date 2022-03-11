@@ -20,7 +20,7 @@ router.get("/search", searchQuery);
 router.get("/:slug", getProductsByBrand);
 router.get("/prod/:id", getProduct);
 router.delete("/:slug", deleteProduct);
-router.put("/:id", updateProduct);
+router.put("/update/:id", updateProduct);
 router.put("/remove/:id", removeImage);
 router.get("/related/:productId", listRelated);
 router.post("/search/filters", searchFilters);

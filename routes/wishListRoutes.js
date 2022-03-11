@@ -11,7 +11,7 @@ router.post("/", async (req, res) => {
     description: req.body.description,
     price: req.body.price,
     size: req.body.size,
-    image: req.body.image
+    image: req.body.image,
   });
   try {
     await wishlist.save();
@@ -49,6 +49,18 @@ router.get("/:id", async (req, res) => {
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
+});
+
+router.delete("/:id", (req, res, next) => {
+  WishList.findByIdAndRemove(req.params.id, (error, data) => {
+    if (error) {
+      return next(error);
+    } else {
+      res.status(200).json({
+        msg: data,
+      });
+    }
+  });
 });
 
 export default router;

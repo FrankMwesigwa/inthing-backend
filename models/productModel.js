@@ -42,7 +42,7 @@ const productSchema = mongoose.Schema(
     },
     subs: {
       type: ObjectId,
-      ref: "Sub",
+      ref: "Brand",
     },
     quantity: Number,
     sold: {
