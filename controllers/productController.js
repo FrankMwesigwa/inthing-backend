@@ -109,7 +109,10 @@ const updateProduct = async (req, res) => {
     productFields.color = req.body.color;
     productFields.manname = req.body.manname;
     productFields.manbrand = req.body.manbrand;
-    productFields.specifications = req.body.specifications.split(",");
+    
+    if (productFields.specifications) {
+      productFields.specifications = req.body.specifications.split(",");
+    }
 
     const updatedProduct = await Product.findOneAndUpdate(
       { _id: req.params.id },

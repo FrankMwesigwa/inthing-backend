@@ -46,7 +46,7 @@ app.use('/api/otp', smsRoutes)
 app.use('/api/wishlist', wishRoutes)
 app.use('/api/accessory', accessoryRoutes)
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 7000
 
 app.listen(
   PORT,
