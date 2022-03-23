@@ -1,7 +1,7 @@
 import express from "express";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import Customer from "../models/customerModel";
+import User from "../models/customerModel";
 
 const router = express.Router();
 const key = "SEDRTGYH1234";
@@ -54,16 +54,16 @@ router.post("/verifyOTP", async (req, res) => {
   const data = `${phonenumber}.${otp}.${expires}`;
   const newhash = crypto.createHmac("sha256", key).update(data).digest("hex");
 
-  const customer = await Customer.findOne({ phonenumber });
+  const customer = await User.findOne({ phonenumber });
 
   if (newhash === hashvalue) {
     if (customer) {
-      const profile = await Customer.findOneAndUpdate(
+      const profile = await User.findOneAndUpdate(
         { phonenumber },
         { new: true }
       );
       const accessToken = jwt.sign({ profile }, process.env.JWT_SECRET, {
-        expiresIn: "30d",
+        expiresIn: "10d",
       });
       res
         .status(200)
@@ -72,20 +72,18 @@ router.post("/verifyOTP", async (req, res) => {
           token: accessToken,
           profile,
         });
-      console.log("updated Customer ----", profile);
+      console.log("updated User ----", profile);
     } else {
-      const profile = await new Customer({ phonenumber }).save();
-      const accessToken = jwt.sign({ profile }, process.env.JWT_SECRET, {
-        expiresIn: "30d",
-      });
+      // const profile = await new User({ phonenumber }).save();
+      // const accessToken = jwt.sign({ profile }, process.env.JWT_SECRET, {
+      //   expiresIn: "30d",
+      // });
       res
-        .status(200)
+        .status(400)
         .send({
-          message: "OTP Verified Successfully!",
-          token: accessToken,
-          profile,
+          message: "No User Found with this Phone Number",
         });
-      console.log("New Customer ----", profile);
+      console.log("No User Found ----", profile);
     }
   } else {
     return res
@@ -96,7 +94,7 @@ router.post("/verifyOTP", async (req, res) => {
 
 router.get("/customer", async (req, res) => {
   try {
-    let customers = await Customer.find();
+    let customers = await User.find();
     if (!customers) {
       res.json({
         message: "There are no customers in the database at this time",

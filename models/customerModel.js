@@ -1,21 +1,25 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-const customerSchema = mongoose.Schema(
+const userSchema = mongoose.Schema(
   {
     phonenumber: {
-      type: String
-    },
-    role: {
       type: String,
-      enum: ['customer', 'admin'],
-      default:'customer'
-  },
+    },
+    fname: {
+      type: String,
+    },
+    lname: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
   },
   {
     timestamps: true,
   }
-)
+);
 
-const Customer = mongoose.model('Customer', customerSchema)
+const User = mongoose.model("User", userSchema);
 
-export default Customer
+export default User;
