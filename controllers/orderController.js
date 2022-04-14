@@ -7,12 +7,12 @@ export const getMyOrders = async (req, res) => {
 }
 
 export const getOrders = async (req, res) => {
-  const orders = await Order.find({}).populate('user')
+  const orders = await Order.find({})
   res.json(orders)
 }
 
 export const getOrderById = async (req, res) => {
-  const order = await Order.findById(req.params.id).populate('user')
+  const order = await Order.findById(req.params.id)
 
   if (order) {
     res.json(order)
