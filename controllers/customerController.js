@@ -1,33 +1,61 @@
+import Bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import User from "../models/customerModel";
 
 export const newCustomer = async (req, res) => {
-  const { fname, lname, email, phonenumber } = req.body;
+  const { fullnames, email, phonenumber, password, address } = req.body;
 
-  // const customerExists = await User.findOne({ phonenumber });
+  const customerExists = await User.findOne({ email });
 
-  // if (customerExists) {
-  //   res.status(400);
-  //   throw new Error("User with that Phone Number already exists");
-  // }
+  if (customerExists) {
+    res.status(400);
+    throw new Error("User with that Email Address already exists");
+  }
 
   const customer = await User.create({
-    fname,
-    lname,
     email,
     phonenumber,
+    fullnames,
+    password: Bcrypt.hashSync(password, 10),
+    address
   });
 
   if (customer) {
     res.status(201).json({
       _id: customer._id,
-      fname: customer.fname,
-      lname: customer.lname,
+      fullnames: customer.fullnames,
       email: customer.email,
+      address: customer.address,
+      password: customer.password,
       phonenumber: customer.phonenumber,
     });
   } else {
     res.status(400);
     throw new Error("Invalid customer data");
+  }
+};
+
+export const customerLogin = async (req, res) => {
+  try {
+    var user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(400).send({ message: "The Email is not registered" });
+    }
+    if (!Bcrypt.compareSync(req.body.password, user.password)) {
+      return res.status(400).send({ message: "Invalid password " });
+    }
+
+    const accessToken = jwt.sign(
+      { id: user._id},
+      "process.env.JWT_SECRET"
+    );
+    res.json({
+      accessToken: accessToken,
+      user: user,
+      message: "Successfully logged in!",
+    });
+  } catch (error) {
+    res.status(500).send(error);
   }
 };
 

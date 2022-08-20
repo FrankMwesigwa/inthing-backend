@@ -5,13 +5,16 @@ const userSchema = mongoose.Schema(
     phonenumber: {
       type: String,
     },
-    fname: {
-      type: String,
-    },
-    lname: {
+    fullnames: {
       type: String,
     },
     email: {
+      type: String,
+    },
+    password: {
+      type: String,
+    },
+    address: {
       type: String,
     },
   },
