@@ -5,16 +5,16 @@ const wishListSchema = mongoose.Schema(
     title: {
       type: String,
     },
-    phonenumber: {
+    email: {
       type: String,
     },
-    description: {
+    phonenumber: {
       type: String,
     },
     price: {
       type: Number,
     },
-    image: {
+    images: {
       type: String,
     },
     size: {

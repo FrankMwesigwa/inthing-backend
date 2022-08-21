@@ -6,6 +6,8 @@ import {
   getOrderById
 } from '../controllers/orderController.js'
 
+import {auth} from '../middleware/authMiddleware.js'
+
 router.post("/", createOrder);
 router.get("/", getOrders);
 router.get("/:id", getOrderById);

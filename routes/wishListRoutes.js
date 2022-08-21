@@ -8,14 +8,13 @@ router.post("/", async (req, res) => {
   const wishlist = new WishList({
     title: req.body.title,
     phonenumber: req.body.phonenumber,
-    description: req.body.description,
+    email: req.body.email,
     price: req.body.price,
-    size: req.body.size,
-    image: req.body.image,
+    images: req.body.images,
   });
   try {
     await wishlist.save();
-    res.status(201).json(wishlist);
+    res.json(wishlist);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -25,9 +24,9 @@ router.get("/", async (req, res) => {
   try {
     const wishlist = await WishList.find();
 
-    res.status(200).json(wishlist);
+    res.json(wishlist);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.json({ message: error.message });
   }
 });
 

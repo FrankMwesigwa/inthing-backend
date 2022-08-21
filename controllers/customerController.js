@@ -39,10 +39,10 @@ export const customerLogin = async (req, res) => {
   try {
     var user = await User.findOne({ email: req.body.email });
     if (!user) {
-      return res.status(400).send({ message: "The Email is not registered" });
+      return res.status(400).json({ message: "The Email is not registered" });
     }
     if (!Bcrypt.compareSync(req.body.password, user.password)) {
-      return res.status(400).send({ message: "Invalid password " });
+      return res.status(400).json({ message: "Invalid password " });
     }
 
     const accessToken = jwt.sign(
