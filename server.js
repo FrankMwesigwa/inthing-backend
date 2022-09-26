@@ -15,6 +15,8 @@ import authRoutes from './routes/authRoutes';
 import customerRoutes from './routes/customerRoutes.js';
 import adminRoutes from './routes/adminRoutes';
 import smsRoutes from './routes/smsRoutes';
+import bannerRoutes from './routes/bannerRoutes';
+import sellerRoutes from './routes/sellerRoutes';
 import wishRoutes from './routes/wishListRoutes';
 
 dotenv.config()
@@ -42,6 +44,8 @@ app.use('/api/auth', authRoutes)
 app.use('/api/customer', customerRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/otp', smsRoutes)
+app.use('/api/banners', bannerRoutes)
+app.use('/api/seller', sellerRoutes)
 app.use('/api/wishlist', wishRoutes)
 
 const PORT = process.env.PORT || 7000
