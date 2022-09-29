@@ -7,7 +7,7 @@ const {
   getAllStaff,
   deleteStaff,
   updateStaff,
-} = require("./adminController.js");
+} = require("../controllers/adminController.js");
 
 const router = express.Router();
 
