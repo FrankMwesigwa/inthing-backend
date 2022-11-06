@@ -152,13 +152,25 @@ const handleQuery = async (req, res, query) => {
   res.json(products);
 };
 
-export const searchQuery = async (req, res) => {
-  const products = await Product.find({})
-    .populate("category", "_id name")
-    .populate("subs", "_id name")
-    .exec();
-
-  res.json(products);
+export const productSearch = async (req, res) => {
+  try {
+    let products = await Product.find({
+      $or: [
+        {
+          title: { $regex: req.params.key, $options: "i" }
+        },
+        {
+          engravedNo: { $regex: req.params.key, $options: "i" }
+        },
+        {
+          officeNo: { $regex: req.params.key, $options: "i" }
+        }
+      ],
+    });
+    res.status(200).json(products);
+  } catch (error) {
+    res.json(error.message);
+  }
 };
 
 const searchFilters = async (req, res) => {

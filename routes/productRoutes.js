@@ -10,13 +10,11 @@ import {
   getProductsByBrand,
   listRelated,
   searchFilters,
-  searchQuery,
+  productSearch,
   removeImage
 } from '../controllers/productController.js'
 
-const { authCheck, adminCheck } = require("../middleware/authMiddleware");
-
-router.get("/search", searchQuery);
+router.get("/search/:key", productSearch);
 router.get("/:slug", getProductsByBrand);
 router.get("/prod/:id", getProduct);
 router.delete("/:slug", deleteProduct);
