@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
-const wishListSchema = mongoose.Schema(
+const schema = mongoose.Schema;
+const { ObjectId } = mongoose.Schema;
+
+const wishListSchema = schema(
   {
     title: {
-      type: String,
-    },
-    email: {
       type: String,
     },
     phonenumber: {
@@ -17,8 +17,12 @@ const wishListSchema = mongoose.Schema(
     images: {
       type: String,
     },
-    size: {
+    email: {
       type: String,
+    },
+    user: {
+      type: ObjectId,
+      ref: "User",
     },
   },
   {
